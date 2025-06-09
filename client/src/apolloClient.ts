@@ -1,8 +1,17 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
+// Add this declaration to extend ImportMeta for Vite env variables
+interface ImportMetaEnv {
+  readonly VITE_GRAPHQL_URI?: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3001/graphql',
+  uri: import.meta.env.VITE_GRAPHQL_URI || '/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
